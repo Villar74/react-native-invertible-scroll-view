@@ -8,6 +8,7 @@ import {
   ScrollView,
   StyleSheet,
   View,
+  Platform
 } from 'react-native';
 import ScrollableMixin from 'react-native-scrollable-mixin';
 
@@ -66,20 +67,32 @@ let InvertibleScrollView = createReactClass({
     });
   },
 });
-
+    
 let styles = StyleSheet.create({
-  verticallyInverted: {
-    flex: 1,
-    transform: [
-      { scaleY: -1 },
-    ],
-  },
-  horizontallyInverted: {
-    flex: 1,
-    transform: [
-      { scaleX: -1 },
-    ],
-  },
+  verticallyInverted: Platform.select({
+    ios: {transform: [{scaleY: -1}]},
+    android: {
+      scaleY: -1,
+      transform: [
+        {
+          scaleY: -1,
+          perspective: 1280
+        },
+      ],
+    },
+  }),
+  horizontallyInverted: Platform.select({
+    ios: {transform: [{scaleX: -1}]},
+    android: {
+      scaleX: -1,
+      transform: [
+        {
+          scaleX: -1,
+          perspective: 1280
+        },
+      ],
+    },
+  }),
 });
 
 module.exports = InvertibleScrollView;
